@@ -614,7 +614,11 @@ NSString * const TISwipeableTableViewDidSelectRow = @"TISwipeableTableViewDidSel
 		oldStyle = self.selectionStyle;
 		[self setSelectionStyle:UITableViewCellSelectionStyleNone];
 		
-		
+        id feedbackGenerator = nil;
+        if (NSClassFromString(@"UIImpactFeedbackGenerator")) {
+            feedbackGenerator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
+            [feedbackGenerator prepare];
+        }
     
 		if (animated){
             
@@ -637,6 +641,9 @@ NSString * const TISwipeableTableViewDidSelectRow = @"TISwipeableTableViewDidSel
                 
                 contentViewMoving = NO;
                 
+                if (feedbackGenerator) {
+                    [feedbackGenerator impactOccurred];
+                }
             }];
 
 //			CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:@"position.x"];
@@ -701,6 +708,11 @@ NSString * const TISwipeableTableViewDidSelectRow = @"TISwipeableTableViewDidSel
 //			[backView.layer setPosition:CGPointMake(self.frame.size.width, contentView.layer.position.y)];
 //			[backView.layer addAnimation:[self bounceAnimationWithHideDuration:hideDuration initialXOrigin:backViewOriginalX finalXOrigin:self.frame.size.width] forKey:@"bounce"];
             
+            id feedbackGenerator = nil;
+            if (NSClassFromString(@"UIImpactFeedbackGenerator")) {
+                feedbackGenerator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
+                [feedbackGenerator prepare];
+            }
             
             float duration = 0.35;
             float damping = 0.6f;
@@ -716,6 +728,10 @@ NSString * const TISwipeableTableViewDidSelectRow = @"TISwipeableTableViewDidSel
                 
             } completion:^(BOOL finished) {
                 [self resetViews:YES];
+                
+                if (feedbackGenerator) {
+                    [feedbackGenerator impactOccurred];
+                }
             }];
 			
 		}
